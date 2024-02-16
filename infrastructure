@@ -19,6 +19,10 @@ sudo apt-get update
 sudo apt install nginx
 
 
+sudo tee /etc/nginx/sites-available/default <<EOF
+
+
+
 
 
 
