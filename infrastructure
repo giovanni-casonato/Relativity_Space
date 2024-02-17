@@ -51,6 +51,35 @@ sudo systemctl restart nginx
 
 
 
+# Solution 2:
+
+param (
+    [string]$folderPath,
+    [string]$startDate,
+    [string]$endDate
+)
+
+function Parse-Date($dateString) {
+    return [DateTime]::ParseExact($dateString, 'HH mm yyyy dd MM', $null)
+}
+
+try {
+    $startDateTime = Parse-Date $startDate
+    $endDateTime = Parse-Date $endDate
+
+    Get-ChildItem -Path $folderPath -File -Recurse | Where-Object {
+        $_.CreationTime -ge $startDateTime -and $_.CreationTime -le $endDateTime -and $_.Name -match 'Copy'
+    } | ForEach-Object {
+        try {
+            Remove-Item $_.FullName -Force
+            Write-Host "Deleted file: $($_.FullName)"
+        } catch {
+            Write-Host "Error deleting file: $($_.FullName) - $_.Exception.Message"
+        }
+    }
+} catch {
+    Write-Host "Error: $_.Exception.Message"
+}
 
 
 
