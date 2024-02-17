@@ -13,7 +13,7 @@
 #The script should then recursively look in all the folders within the path provided and delete files that have been
 #created between the first date and second date, and also contain the word "Copy" in their name.
 
-# Solution:
+# Solution 1: (As of today this is no longer possible with the solution below, I still wanted to learn nginx and this problem helped me do so)
 
 sudo apt-get update
 sudo apt install nginx
