@@ -19,7 +19,36 @@ sudo apt-get update
 sudo apt install nginx
 
 
-sudo tee /etc/nginx/sites-available/default <<EOF
+sudo tee /etc/nginx/nginx.conf <<EOF
+http{
+
+	server {
+		listen 80;
+		server_name localhost;
+
+		location / {
+			proxy_pass http://www.google.com;
+			proxy_set_header Host www.google.com;
+		}
+
+        location /search {
+            try_files $uri $uri/ @search_rewrite;
+        }
+
+		location @search_rewrite {
+            if ($args ~* "q=rockets") {
+                rewrite ^/search.*$ /search?q=Relativity+Space break;
+            }
+        }
+
+	}
+}
+
+events {}
+EOF
+
+sudo systemctl restart nginx
+
 
 
 
